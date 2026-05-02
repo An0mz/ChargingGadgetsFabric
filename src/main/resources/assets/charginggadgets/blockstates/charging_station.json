@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "active=false,facing=north": { "model": "charginggadgets:block/charging_station_off" },
+    "active=false,facing=south": { "model": "charginggadgets:block/charging_station_off", "y": 180 },
+    "active=false,facing=west":  { "model": "charginggadgets:block/charging_station_off", "y": 270 },
+    "active=false,facing=east":  { "model": "charginggadgets:block/charging_station_off", "y": 90 },
+    "active=true,facing=north":  { "model": "charginggadgets:block/charging_station" },
+    "active=true,facing=south":  { "model": "charginggadgets:block/charging_station", "y": 180 },
+    "active=true,facing=west":   { "model": "charginggadgets:block/charging_station", "y": 270 },
+    "active=true,facing=east":   { "model": "charginggadgets:block/charging_station", "y": 90 }
+  }
+}

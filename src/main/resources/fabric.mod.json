@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "charginggadgets",
+  "version": "${version}",
+
+  "name": "Charging Gadgets",
+  "description": "A fabric port of direwolfs charging gadgets",
+  "authors": [
+    "Me!"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/charginggadgets/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "charginggadgets.ChargingGadgets"
+    ],
+    "client": [
+      "charginggadgets.client.ChargingGadgetsClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16",
+    "fabric": "*",
+    "minecraft": ">=1.21",
+    "java": ">=21",
+    "reborncore": "*",
+    "team_reborn_energy": ">=4.1.0"
+  }
+}
