@@ -3,6 +3,7 @@ package charginggadgets.client.gui;
 import charginggadgets.blockentity.ChargingStationBlockEntity;
 import charginggadgets.ChargingGadgets;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -29,19 +30,36 @@ public class GuiChargeStation extends GuiBase<BuiltScreenHandler> {
     protected void renderBg(GuiGraphics guiGraphics, final float f, final int mouseX, final int mouseY) {
         super.renderBg(guiGraphics, f, mouseX, mouseY);
 
-        guiGraphics.blit(background, getGuiLeft(), getGuiTop(), 0, 0, this.imageWidth, 80);
+        guiGraphics.blit(RenderType::guiTextured,
+                background,
+                getGuiLeft(), getGuiTop(),
+                0, 0,
+                this.imageWidth, 80,
+                256, 256);
 
         int maxHeight = 13;
         if (this.blockEntity.totalBurnTime > 0) {
             int remaining = (this.blockEntity.burnTime * maxHeight) / this.blockEntity.totalBurnTime;
-            guiGraphics.blit(background, getGuiLeft() + 66, getGuiTop() + 26 + 13 - remaining, 176, 13 - remaining, 14, remaining + 1);
+            guiGraphics.blit(RenderType::guiTextured,
+                    background,
+                    getGuiLeft() + 66,
+                    getGuiTop() + 26 + 13 - remaining,
+                    176, 13 - remaining,
+                    14, remaining + 1,
+                    256, 256);
         }
 
         int maxEnergy = (int) this.blockEntity.getMaxStoredPower(), height = 70;
 
         if (maxEnergy > 0) {
             int remaining = (int) ((this.blockEntity.getEnergy() * height) / maxEnergy);
-            guiGraphics.blit(background, getGuiLeft() + 8, getGuiTop() + 78 - remaining, 176, 84 - remaining, 16, remaining + 1);
+            guiGraphics.blit(RenderType::guiTextured,
+                    background,
+                    getGuiLeft() + 8,
+                    getGuiTop() + 78 - remaining,
+                    176, 84 - remaining,
+                    16, remaining + 1,
+                    256, 256);
         }
     }
 

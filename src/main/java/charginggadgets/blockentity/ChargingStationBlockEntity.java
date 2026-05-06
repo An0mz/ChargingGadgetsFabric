@@ -19,7 +19,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import reborncore.api.IToolDrop;
 import reborncore.api.blockentity.InventoryProvider;
@@ -32,8 +31,6 @@ import reborncore.common.screen.BuiltScreenHandlerProvider;
 import reborncore.common.util.RebornInventory;
 import team.reborn.energy.api.EnergyStorage;
 import team.reborn.energy.api.EnergyStorageUtil;
-
-import java.util.Map;
 
 public class ChargingStationBlockEntity extends PowerAcceptorBlockEntity implements IToolDrop, InventoryProvider, BuiltScreenHandlerProvider {
     private final int inventorySize = 2;
@@ -66,15 +63,9 @@ public class ChargingStationBlockEntity extends PowerAcceptorBlockEntity impleme
         inventory = new RebornInventory<>(inventorySize, "ChargingStationBlockEntity", 64, this);
     }
 
-    public static int getItemBurnTime(ItemStack stack) {
-        if (stack.isEmpty()) {
-            return 0;
-        }
-        Map<Item, Integer> burnMap = AbstractFurnaceBlockEntity.getFuel();
-        if (burnMap.containsKey(stack.getItem())) {
-            return burnMap.get(stack.getItem()) / 50;
-        }
-        return 0;
+    public static int getItemBurnTime(Level level, ItemStack stack) {
+        if (stack.isEmpty()) return 0;
+        return level.fuelValues().burnDuration(stack);
     }
 
     @Override
@@ -119,7 +110,7 @@ public class ChargingStationBlockEntity extends PowerAcceptorBlockEntity impleme
 
         if (burnTime == 0) {
             updateState();
-            burnTime = totalBurnTime = ChargingStationBlockEntity.getItemBurnTime(inventory.getItem(Slots.FUEL.getId()));
+            burnTime = totalBurnTime = ChargingStationBlockEntity.getItemBurnTime(this.level, inventory.getItem(Slots.FUEL.getId()));
             if (burnTime > 0) {
                 updateState();
                 burnItem = inventory.getItem(Slots.FUEL.getId());
