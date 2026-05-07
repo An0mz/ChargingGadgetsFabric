@@ -51,9 +51,6 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// Reborn Core
-	include modImplementation("curse.maven:RebornCore-237903:6664366")
-
 	include modImplementation("teamreborn:energy:${project.energy_version}")
 
 	modImplementation "curse.maven:Cloth-Config-348521:3761416"
@@ -62,6 +59,8 @@ dependencies {
 	modImplementation "org.ladysnake.cardinal-components-api:cardinal-components-item:${project.cca_version}"
 	modImplementation "org.ladysnake.cardinal-components-api:cardinal-components-world:${project.cca_version}"
 	modImplementation "org.ladysnake.cardinal-components-api:cardinal-components-level:${project.cca_version}"
+
+	include modImplementation(files("RebornCore-5.16.0+local.jar"))
 }
 
 processResources {

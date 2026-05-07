@@ -6,7 +6,7 @@ import charginggadgets.client.gui.GuiChargeStation;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import java.util.Objects;
 
 @Environment(EnvType.CLIENT)
 public class ClientGuiType<T extends BlockEntity> {
-    public static final Map<ResourceLocation, ClientGuiType<?>> TYPES = new HashMap<>();
+    public static final Map<Identifier, ClientGuiType<?>> TYPES = new HashMap<>();
 
     public static final ClientGuiType<ChargingStationBlockEntity> CHARGING_STATION = register(GuiType.CHARGING_STATION, GuiChargeStation::new);
 
@@ -24,7 +24,7 @@ public class ClientGuiType<T extends BlockEntity> {
     }
 
     public static void validate() {
-        for (ResourceLocation identifier : GuiType.TYPES.keySet()) {
+        for (Identifier identifier : GuiType.TYPES.keySet()) {
             Objects.requireNonNull(TYPES.get(identifier), "No ClientGuiType for " + identifier);
         }
     }
@@ -37,7 +37,7 @@ public class ClientGuiType<T extends BlockEntity> {
 
         MenuScreens.register(guiType.getScreenHandlerType(), getGuiFactory());
 
-        TYPES.put(guiType.getResourceLocation(), this);
+        TYPES.put(guiType.getIdentifier(), this);
     }
 
     public GuiFactory<T> getGuiFactory() {

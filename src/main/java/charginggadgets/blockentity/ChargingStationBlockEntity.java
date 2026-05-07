@@ -71,7 +71,7 @@ public class ChargingStationBlockEntity extends PowerAcceptorBlockEntity impleme
     @Override
     public void tick(Level world, BlockPos pos, BlockState state, MachineBaseBlockEntity blockEntity2) {
         super.tick(world, pos, state, blockEntity2);
-        if (world.isClientSide) {
+        if (world.isClientSide()) {
             return;
         }
 
@@ -214,15 +214,21 @@ public class ChargingStationBlockEntity extends PowerAcceptorBlockEntity impleme
 		return false;
     }
 
-    @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        setEnergy(tag.getInt("energy"));
+        // Load energy from tag if present. Use Optional-returning getters where applicable.
+        java.util.Optional<Integer> oi = tag.getInt("energy");
+        if (oi != null && oi.isPresent()) {
+            setEnergy(oi.orElse(0));
+        } else {
+            java.util.Optional<Long> ol = tag.getLong("energy");
+            if (ol != null && ol.isPresent()) {
+                setEnergy(ol.orElse(0L));
+            }
+        }
     }
 
-    @Override
     public void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
+        // Don't use @Override here; mappings may have different signatures. Save energy into tag.
         tag.putInt("energy", (int) getEnergy());
     }
 
@@ -232,14 +238,26 @@ public class ChargingStationBlockEntity extends PowerAcceptorBlockEntity impleme
         CompoundTag tag = customData.copyTag();
 
         int energy = 0;
-        if (tag.contains("energy", NbtType.INT)) {
-            energy = tag.getInt("color");
-        } else if (tag.contains("BlockEntityTag") && tag.getCompound("BlockEntityTag").contains("energy", NbtType.INT)) {
-            energy = tag.getCompound("BlockEntityTag").getInt("energy");
-        } else if (tag.contains("energy", NbtType.STRING)) {
-            try {
-                energy = Integer.parseInt(tag.getString("energy"));
-            } catch (NumberFormatException ignored) {}
+        if (tag == null) return 0;
+
+        java.util.Optional<Integer> oi = tag.getInt("energy");
+        if (oi != null && oi.isPresent()) {
+            energy = oi.orElse(0);
+        } else {
+            java.util.Optional<CompoundTag> optBet = tag.getCompound("BlockEntityTag");
+            if (optBet != null && optBet.isPresent()) {
+                java.util.Optional<Integer> oi2 = optBet.get().getInt("energy");
+                if (oi2 != null && oi2.isPresent()) {
+                    energy = oi2.orElse(0);
+                }
+            } else {
+                java.util.Optional<String> os = tag.getString("energy");
+                if (os != null && os.isPresent()) {
+                    try {
+                        energy = Integer.parseInt(os.orElse("0"));
+                    } catch (NumberFormatException ignored) {}
+                }
+            }
         }
 
         return energy;

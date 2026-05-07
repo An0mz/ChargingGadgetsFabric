@@ -4,7 +4,7 @@ import charginggadgets.ChargingGadgets;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -14,17 +14,17 @@ import reborncore.common.powerSystem.RcEnergyItem;
 
 public class InitUtils {
     public static <I extends Item> I setup(I item, String name) {
-        RebornRegistry.registerIdent(item, ResourceLocation.fromNamespaceAndPath(ChargingGadgets.MOD_ID, name));
+        RebornRegistry.registerIdent(item, Identifier.fromNamespaceAndPath(ChargingGadgets.MOD_ID, name));
         return item;
     }
 
     public static <B extends Block> B setup(B block, String name) {
-        RebornRegistry.registerIdent(block, ResourceLocation.fromNamespaceAndPath(ChargingGadgets.MOD_ID, name));
+        RebornRegistry.registerIdent(block, Identifier.fromNamespaceAndPath(ChargingGadgets.MOD_ID, name));
         return block;
     }
 
     public static SoundEvent setup(String name) {
-        ResourceLocation identifier = ResourceLocation.fromNamespaceAndPath(ChargingGadgets.MOD_ID, name);
+        Identifier identifier = Identifier.fromNamespaceAndPath(ChargingGadgets.MOD_ID, name);
         return Registry.register(BuiltInRegistries.SOUND_EVENT, identifier, SoundEvent.createVariableRangeEvent(identifier));
     }
 

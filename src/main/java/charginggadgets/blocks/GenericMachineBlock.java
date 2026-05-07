@@ -18,12 +18,6 @@ public class GenericMachineBlock extends BlockMachineBase {
     private final IMachineGuiHandler gui;
     BiFunction<BlockPos, BlockState, BlockEntity> blockEntityClass;
 
-    public GenericMachineBlock(IMachineGuiHandler gui, BiFunction<BlockPos, BlockState, BlockEntity> blockEntityClass) {
-        super(BlockBehaviour.Properties.of());
-        this.blockEntityClass = blockEntityClass;
-        this.gui = gui;
-    }
-
     public GenericMachineBlock(BlockBehaviour.Properties settings, IMachineGuiHandler gui, BiFunction<BlockPos, BlockState, BlockEntity> blockEntityClass) {
         super(settings);
         this.blockEntityClass = blockEntityClass;
@@ -44,7 +38,9 @@ public class GenericMachineBlock extends BlockMachineBase {
         return gui;
     }
 
-    public RenderShape getRenderType() {
-        return RenderShape.MODEL;
-    };
+    @Override
+    public int getRenderType() {
+        // Base mappings expect an int; return ordinal value for RenderShape.MODEL
+        return RenderShape.MODEL.ordinal();
+    }
 }

@@ -8,7 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -24,32 +24,32 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class GuiType<T extends BlockEntity> implements IMachineGuiHandler {
-    public static final Map<ResourceLocation, GuiType<?>> TYPES = new HashMap<>();
+    public static final Map<Identifier, GuiType<?>> TYPES = new HashMap<>();
 
     public static final GuiType<ChargingStationBlockEntity> CHARGING_STATION = register("chargingstation");
 
     private static <T extends BlockEntity> GuiType<T> register(String id) {
-        return register(ResourceLocation.fromNamespaceAndPath(ChargingGadgets.MOD_ID, id));
+        return register(Identifier.fromNamespaceAndPath(ChargingGadgets.MOD_ID, id));
     }
 
-    public static <T extends BlockEntity> GuiType<T> register(ResourceLocation identifier) {
+    public static <T extends BlockEntity> GuiType<T> register(Identifier identifier) {
         if (TYPES.containsKey(identifier)) {
             throw new RuntimeException("Duplicate gui type found");
         }
         return new GuiType<>(identifier);
     }
 
-    private final ResourceLocation identifier;
+    private final Identifier identifier;
     private final MenuType<BuiltScreenHandler> screenHandlerType;
 
-    private GuiType(ResourceLocation identifier) {
+    private GuiType(Identifier identifier) {
         this.identifier = identifier;
         this.screenHandlerType = Registry.register(BuiltInRegistries.MENU, identifier, new ExtendedScreenHandlerType<>(getScreenHandlerFactory(), BlockPos.STREAM_CODEC));
 
         TYPES.put(identifier, this);
     }
 
-    public ResourceLocation getResourceLocation() {
+    public Identifier getIdentifier() {
         return identifier;
     }
 
@@ -71,7 +71,7 @@ public final class GuiType<T extends BlockEntity> implements IMachineGuiHandler 
 
     @Override
     public void open(Player player, BlockPos pos, Level world) {
-        if (!world.isClientSide) {
+        if (!world.isClientSide()) {
             player.openMenu(new ExtendedScreenHandlerFactory<BlockPos>() {
                 @Override
                 public BlockPos getScreenOpeningData(ServerPlayer serverPlayer) {

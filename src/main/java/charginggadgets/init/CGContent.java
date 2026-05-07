@@ -1,18 +1,24 @@
 package charginggadgets.init;
 
 import charginggadgets.blockentity.ChargingStationBlockEntity;
+import charginggadgets.blocks.ChargingStationBlock;
 import charginggadgets.blocks.GenericMachineBlock;
 import charginggadgets.blocks.GuiType;
 import charginggadgets.utils.InitUtils;
-import java.util.Locale;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+
+import java.util.Locale;
 
 public class CGContent {
     public enum Machine implements ItemLike {
-        CHARGING_STATION(new GenericMachineBlock(GuiType.CHARGING_STATION, ChargingStationBlockEntity::new));
+        CHARGING_STATION(new ChargingStationBlock());
 
         public final String name;
         public final Block block;
@@ -32,5 +38,4 @@ public class CGContent {
             return block.asItem();
         }
     }
-
 }

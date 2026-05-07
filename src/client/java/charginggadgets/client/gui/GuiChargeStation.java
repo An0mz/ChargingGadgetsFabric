@@ -3,15 +3,15 @@ package charginggadgets.client.gui;
 import charginggadgets.blockentity.ChargingStationBlockEntity;
 import charginggadgets.ChargingGadgets;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import reborncore.client.gui.GuiBase;
 import reborncore.common.screen.BuiltScreenHandler;
 
 public class GuiChargeStation extends GuiBase<BuiltScreenHandler> {
-    private static final ResourceLocation background = ResourceLocation.fromNamespaceAndPath(ChargingGadgets.MOD_ID, "textures/gui/charging_station.png");
+    private static final Identifier background = Identifier.fromNamespaceAndPath(ChargingGadgets.MOD_ID, "textures/gui/charging_station.png");
 
     // Energy bar bounds (relative to GUI origin)
     private static final int ENERGY_BAR_X = 8;
@@ -30,36 +30,34 @@ public class GuiChargeStation extends GuiBase<BuiltScreenHandler> {
     protected void renderBg(GuiGraphics guiGraphics, final float f, final int mouseX, final int mouseY) {
         super.renderBg(guiGraphics, f, mouseX, mouseY);
 
-        guiGraphics.blit(RenderType::guiTextured,
-                background,
+        // Draw background texture (use float tex size overload)
+        guiGraphics.blit(background,
                 getGuiLeft(), getGuiTop(),
                 0, 0,
-                this.imageWidth, 80,
-                256, 256);
+                (float) this.imageWidth, (float) 80,
+                256f, 256f);
 
         int maxHeight = 13;
         if (this.blockEntity.totalBurnTime > 0) {
             int remaining = (this.blockEntity.burnTime * maxHeight) / this.blockEntity.totalBurnTime;
-            guiGraphics.blit(RenderType::guiTextured,
-                    background,
+            guiGraphics.blit(background,
                     getGuiLeft() + 66,
                     getGuiTop() + 26 + 13 - remaining,
                     176, 13 - remaining,
-                    14, remaining + 1,
-                    256, 256);
+                    (float)14, (float)(remaining + 1),
+                    256f, 256f);
         }
 
         int maxEnergy = (int) this.blockEntity.getMaxStoredPower(), height = 70;
 
         if (maxEnergy > 0) {
             int remaining = (int) ((this.blockEntity.getEnergy() * height) / maxEnergy);
-            guiGraphics.blit(RenderType::guiTextured,
-                    background,
+            guiGraphics.blit(background,
                     getGuiLeft() + 8,
                     getGuiTop() + 78 - remaining,
                     176, 84 - remaining,
-                    16, remaining + 1,
-                    256, 256);
+                    (float)16, (float)(remaining + 1),
+                    256f, 256f);
         }
     }
 
@@ -75,9 +73,9 @@ public class GuiChargeStation extends GuiBase<BuiltScreenHandler> {
         if (mouseX >= barLeft && mouseX <= barRight && mouseY >= barTop && mouseY <= barBottom) {
             long energy    = this.blockEntity.getEnergy();
             long maxEnergy = this.blockEntity.getMaxStoredPower();
-            guiGraphics.renderTooltip(font,
-                Component.literal(String.format("%,d / %,d E", energy, maxEnergy)),
-                mouseX, mouseY);
+            // Draw a simple tooltip string at the mouse position (GuiBase/GuiGraphics mappings vary)
+            String tooltip = String.format("%,d / %,d E", energy, maxEnergy);
+            guiGraphics.drawString(font, Component.literal(tooltip), mouseX, mouseY, 0xFFFFFF);
         }
     }
 

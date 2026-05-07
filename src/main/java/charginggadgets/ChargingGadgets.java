@@ -8,7 +8,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.LogManager;
@@ -32,7 +32,7 @@ public class ChargingGadgets implements ModInitializer {
 
         ITEMGROUP = Registry.register(
                 BuiltInRegistries.CREATIVE_MODE_TAB,
-                ResourceLocation.fromNamespaceAndPath(MOD_ID, "item_group"),
+                Identifier.fromNamespaceAndPath(MOD_ID, "item_group"),
                 FabricItemGroup.builder()
                         .title(net.minecraft.network.chat.Component.translatable("itemGroup.charginggadgets.item_group"))
                         .icon(() -> new ItemStack(CGContent.Machine.CHARGING_STATION))
