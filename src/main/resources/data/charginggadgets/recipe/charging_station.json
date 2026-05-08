@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "iri",
+    "drd",
+    "ili"
+  ],
+  "key": {
+    "i": "minecraft:iron_ingot",
+    "r": "minecraft:redstone",
+    "d": "minecraft:lapis_lazuli",
+    "l": "minecraft:coal_block"
+  },
+  "result": {
+    "id": "charginggadgets:charging_station",
+    "count": 1
+  }
+}
